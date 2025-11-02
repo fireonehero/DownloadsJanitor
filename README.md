@@ -1,9 +1,6 @@
-# 🧹 Janitor
+# 🧹 DownloadsJanitor
 
-**Janitor** is an automated, rules-based file organizer for Windows. Built in modern C++, this tool monitors specified folders (like your 'Downloads') and automatically moves files to their correct destinations based on your custom JSON rules, keeping your system clean and tidy.
-
-![]
-*(Demo image to be added here)*
+**DownloadsJanitor** is an automated, rules-based file organizer for Windows. Built in modern C++, this tool monitors specified folders (like your 'Downloads') and automatically moves files to their correct destinations based on your custom JSON rules, keeping your system clean and tidy.
 
 ---
 
@@ -11,8 +8,8 @@
 
 * **Rules-Based Organizing:** Define simple or complex rules in an easy-to-edit `rules.json` file.
 * **Automatic Sorting:** Sorts files based on their extensions (e.g., `.png`, `.jpg` -> `Pictures/`).
-* **Automatic Folder Creation:** If a destination folder doesn't exist, Janitor will create it for you.
-* **Modern C++:** Built using C++17 `<filesystem>` for high-performance I/O.
+* **Automatic Folder Creation:** If a destination folder doesn't exist, DownloadsJanitor will create it for you.
+* **Modern C++:** Built using C++17 for high-performance I/O.
 * **(In-Progress) Background Monitoring:** A future goal is to have the tool run silently in the system tray and watch for new files in real-time.
 
 ---
@@ -31,8 +28,8 @@ To get a local copy up and running, follow these simple steps.
 
 1.  **Clone the repo:**
     ```sh
-    git clone [https://github.com/your-username/Janitor.git](https://github.com/your-username/Janitor.git)
-    cd Janitor
+    git clone [https://github.com/your-username/DownloadsJanitor.git](https://github.com/your-username/DownloadsJanitor.git)
+    cd DownloadsJanitor
     ```
 
 2.  **Get Submodules (if you add nlohmann/json as a submodule):**
@@ -53,14 +50,14 @@ To get a local copy up and running, follow these simple steps.
 4.  **Run the application:**
     The final executable will be in your `build/` directory.
     ```sh
-    ./build/Janitor.exe
+    ./build/DownloadsJanitor.exe
     ```
 
 ---
 
 ### ⚙️ How to Use
 
-By default, `Janitor.exe` will look for a `rules.json` file in its current directory.
+By default, `DownloadsJanitor.exe` will look for a `rules.json` file in its current directory.
 
 #### Configuration (`config/rules.json`)
 
@@ -103,4 +100,4 @@ The `rules.json` file is the brain of the operation. You define which folder to 
 
 ### ⚖️ License
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+This project is licensed under the MPL 2.0 License - see the `LICENSE` file for details.

@@ -6,7 +6,7 @@
     "extensions": [".example"],
     "destination": "C:/Some/Folder/You/Prefer"
   },
-  "user": "Fireonehero",
+  "user": "ExampleUsernameHere",
   "watch_folder": "C:/Users/{{user}}/Downloads",
   "use_default_rules": true,
   "default_rules": [

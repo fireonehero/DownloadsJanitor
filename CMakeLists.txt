@@ -8,6 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(DOWNLOADS_JANITOR_SOURCES
     src/main.cpp
+    src/ConfigParser.cpp
+    src/FileMover.cpp
 )
 
 add_executable(${PROJECT_NAME})
@@ -23,3 +25,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nlohmann_json)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+
+if (WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Advapi32)
+endif()

@@ -1,25 +1,55 @@
 {
-  "watch_folder": "C:/Users/YourUser/Downloads",
-  "rules": [
+  "_instructions": "Set 'user' below so {{user}} tokens resolve. Toggle 'use_default_rules' to keep the defaults. Add or override entries inside 'custom_rules'.",
+  "_instructions_custom_rules": "Each rule needs an array of extensions (keep the leading dot) and the absolute destination folder path.",
+  "_example_custom_rule": {
+    "comment": "Copy this object into 'custom_rules' and edit the extensions/destination.",
+    "extensions": [".example"],
+    "destination": "C:/Some/Folder/You/Prefer"
+  },
+  "user": "Fireonehero",
+  "watch_folder": "C:/Users/{{user}}/Downloads",
+  "use_default_rules": true,
+  "default_rules": [
     {
-      "extensions": [".exe", ".msi"],
-      "destination": "C:/Users/YourUser/Downloads/Installers"
+      "comment": "Installers and packages",
+      "extensions": [".exe", ".msi", ".msix", ".msixbundle", ".jar"],
+      "destination": "C:/Installers"
     },
     {
-      "extensions": [".zip", ".rar", ".7z"],
-      "destination": "C:/Users/YourUser/Downloads/Archives"
+      "comment": "Compressed archives and disc images",
+      "extensions": [".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz", ".iso"],
+      "destination": "C:/Archives"
     },
     {
-      "extensions": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
-      "destination": "C:/Users/YourUser/Pictures/FromDownloads"
+      "comment": "Photos and screenshots",
+      "extensions": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".heic"],
+      "destination": "C:/Users/{{user}}/Pictures"
     },
     {
-      "extensions": [".pdf"],
-      "destination": "C:/Users/YourUser/Documents/PDFs"
+      "comment": "Videos and screen recordings",
+      "extensions": [".mp4", ".mkv", ".mov", ".avi", ".wmv"],
+      "destination": "C:/Users/{{user}}/Videos"
     },
     {
-      "extensions": [".txt", ".md"],
-      "destination": "C:/Users/YourUser/Documents/Notes"
+      "comment": "Music and audio clips",
+      "extensions": [".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a"],
+      "destination": "C:/Users/{{user}}/Music"
+    },
+    {
+      "comment": "Office, presentations, and spreadsheets",
+      "extensions": [".pdf", ".doc", ".docx", ".rtf", ".ppt", ".pptx", ".pps", ".pp", ".xls", ".xlsx"],
+      "destination": "C:/Users/{{user}}/Documents"
+    },
+    {
+      "comment": "Web pages and saved sites",
+      "extensions": [".html", ".htm", ".mhtml", ".url"],
+      "destination": "C:/Users/{{user}}/Downloads/Web"
+    },
+    {
+      "comment": "Plain text, markdown, and config files",
+      "extensions": [".txt", ".md", ".log", ".json", ".yaml", ".yml", ".xml", ".ini", ".cfg"],
+      "destination": "C:/Users/{{user}}/Documents/Notes"
     }
-  ]
+  ],
+  "custom_rules": []
 }

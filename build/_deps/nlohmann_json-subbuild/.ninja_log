@@ -1,0 +1,21 @@
+# ninja log v7
+2	60	7839790649655289	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-mkdir	a9f7c5ae7bf8fd34
+2	60	7839790649655289	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-mkdir	a9f7c5ae7bf8fd34
+61	320039	7839793849411907	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-download	e3c411b3c5db5210
+61	320039	7839793849411907	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-download	e3c411b3c5db5210
+320040	320250	7839793849495603	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-update	d6351f972ece0890
+320040	320250	7839793849495603	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-update	d6351f972ece0890
+320250	320332	7839793852344320	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-patch	e578580a310880cf
+320250	320332	7839793852344320	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-patch	e578580a310880cf
+320332	320415	7839793853150078	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-configure	6fe9db063b6a1608
+320332	320415	7839793853150078	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-configure	6fe9db063b6a1608
+320415	320501	7839793854034414	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-build	669899d7e13bf33f
+320415	320501	7839793854034414	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-build	669899d7e13bf33f
+320501	320582	7839793854844450	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-install	99f6dae529eae85b
+320501	320582	7839793854844450	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-install	99f6dae529eae85b
+320582	320661	7839793855646855	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-test	dadfdf1c8a9e5425
+320582	320661	7839793855646855	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-test	dadfdf1c8a9e5425
+320662	320767	7839793856690420	CMakeFiles/nlohmann_json-populate-complete	729bdb560cbc647e
+320662	320767	7839793856690420	nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-done	729bdb560cbc647e
+320662	320767	7839793856690420	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/CMakeFiles/nlohmann_json-populate-complete	729bdb560cbc647e
+320662	320767	7839793856690420	C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-subbuild/nlohmann_json-populate-prefix/src/nlohmann_json-populate-stamp/nlohmann_json-populate-done	729bdb560cbc647e

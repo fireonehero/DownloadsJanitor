@@ -1,0 +1,25 @@
+{
+  "watch_folder": "C:/Users/YourUser/Downloads",
+  "rules": [
+    {
+      "extensions": [".exe", ".msi"],
+      "destination": "C:/Users/YourUser/Downloads/Installers"
+    },
+    {
+      "extensions": [".zip", ".rar", ".7z"],
+      "destination": "C:/Users/YourUser/Downloads/Archives"
+    },
+    {
+      "extensions": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+      "destination": "C:/Users/YourUser/Pictures/FromDownloads"
+    },
+    {
+      "extensions": [".pdf"],
+      "destination": "C:/Users/YourUser/Documents/PDFs"
+    },
+    {
+      "extensions": [".txt", ".md"],
+      "destination": "C:/Users/YourUser/Documents/Notes"
+    }
+  ]
+}

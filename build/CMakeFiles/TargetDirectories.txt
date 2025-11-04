@@ -1,5 +1,0 @@
-C:/Projects/C++/DownloadsJanitor/build/CMakeFiles/DownloadsJanitor.dir
-C:/Projects/C++/DownloadsJanitor/build/CMakeFiles/edit_cache.dir
-C:/Projects/C++/DownloadsJanitor/build/CMakeFiles/rebuild_cache.dir
-C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-build/CMakeFiles/edit_cache.dir
-C:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-build/CMakeFiles/rebuild_cache.dir

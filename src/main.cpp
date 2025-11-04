@@ -67,9 +67,9 @@ std::filesystem::path getExecutablePath() {
     return std::filesystem::path(buffer);
 }
 
-bool registerForStartup(const std::filesystem::path& executablePath) {
-    if (executablePath.empty()) {
-        std::cerr << "Unable to register startup entry: executable path is empty." << std::endl;
+bool registerForStartup(const std::wstring& commandLine) {
+    if (commandLine.empty()) {
+        std::cerr << "Unable to register startup entry: command line is empty." << std::endl;
         return false;
     }
 
@@ -80,13 +80,12 @@ bool registerForStartup(const std::filesystem::path& executablePath) {
         return false;
     }
 
-    const std::wstring exe = executablePath.wstring();
     status = RegSetValueExW(runKey,
                             kStartupValueName,
                             0,
                             REG_SZ,
-                            reinterpret_cast<const BYTE*>(exe.c_str()),
-                            static_cast<DWORD>((exe.size() + 1) * sizeof(wchar_t)));
+                            reinterpret_cast<const BYTE*>(commandLine.c_str()),
+                            static_cast<DWORD>((commandLine.size() + 1) * sizeof(wchar_t)));
     RegCloseKey(runKey);
 
     if (status != ERROR_SUCCESS) {
@@ -94,7 +93,19 @@ bool registerForStartup(const std::filesystem::path& executablePath) {
         return false;
     }
 
-    std::cout << "Startup entry registered successfully." << std::endl;
+    std::wstring_view commandView(commandLine.c_str(), commandLine.size());
+    int utf8Length = WideCharToMultiByte(CP_UTF8, 0, commandView.data(), static_cast<int>(commandView.size()),
+                                         nullptr, 0, nullptr, nullptr);
+    std::string commandUtf8;
+    if (utf8Length > 0) {
+        commandUtf8.resize(static_cast<std::size_t>(utf8Length));
+        WideCharToMultiByte(CP_UTF8, 0, commandView.data(), static_cast<int>(commandView.size()),
+                            commandUtf8.data(), utf8Length, nullptr, nullptr);
+    } else {
+        commandUtf8 = "<unavailable>";
+    }
+
+    std::cout << "Startup entry registered successfully: " << commandUtf8 << std::endl;
     return true;
 }
 
@@ -164,7 +175,35 @@ int main() {
     }
 
     FileMover mover(watchFolder, std::move(rules));
-    registerForStartup(executablePath);
+
+    std::wstring startupCommand;
+    if (executablePath.empty()) {
+        std::cerr << "Executable path is empty; cannot configure startup." << std::endl;
+    } else {
+        std::error_code scriptExistsErr;
+        const std::filesystem::path scriptPath =
+            executablePath.parent_path().parent_path() / "scripts" / "RunDownloadsJanitorHidden.vbs";
+
+        if (std::filesystem::exists(scriptPath, scriptExistsErr) && !scriptExistsErr) {
+            startupCommand = L"wscript.exe \"" + scriptPath.wstring() + L"\"";
+            std::cout << "Configuring startup to run via script: " << scriptPath.string() << std::endl;
+        } else {
+            if (scriptExistsErr) {
+                std::cerr << "Unable to validate hidden launcher script: " << scriptExistsErr.message()
+                          << ". Falling back to launching the executable directly." << std::endl;
+            } else {
+                std::cout << "Hidden launcher script not found; falling back to launching the executable directly."
+                          << std::endl;
+            }
+            startupCommand = L"\"" + executablePath.wstring() + L"\"";
+        }
+    }
+
+    if (!startupCommand.empty()) {
+        registerForStartup(startupCommand);
+    } else {
+        std::cerr << "Startup registration skipped because the command line could not be determined." << std::endl;
+    }
 
     std::cout << "Running DownloadsJanitor once on startup..." << std::endl;
     mover.organizeOnce();

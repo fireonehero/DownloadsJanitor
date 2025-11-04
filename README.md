@@ -63,6 +63,8 @@ Just double-click `scripts\RunDownloadsJanitorHidden.vbs` (or run the command be
 wscript.exe ".\scripts\RunDownloadsJanitorHidden.vbs"
 ```
 
+When launched this way, DownloadsJanitor records the script as your startup command, so future logins will continue to start the hidden watcher automatically.
+
 ---
 
 ### ⚙️ Configuration (`config/rules.json`)

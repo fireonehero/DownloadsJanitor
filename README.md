@@ -2,6 +2,8 @@
 
 **DownloadsJanitor** is an automated, rules-based file organizer for Windows. Built in modern C++, this tool monitors specified folders (like your 'Downloads') and automatically moves files to their correct destinations based on your custom JSON rules, keeping your system clean and tidy.
 
+> **Note:** DownloadsJanitor targets Windows 10/11. The current build uses the Win32 API for startup registration and file change notifications.
+
 ---
 
 ### ✨ Features
@@ -10,7 +12,7 @@
 * **Automatic Sorting:** Sorts files based on their extensions (e.g., `.png`, `.jpg` -> `Pictures/`).
 * **Automatic Folder Creation:** If a destination folder doesn't exist, DownloadsJanitor will create it for you.
 * **Modern C++:** Built using C++17 for high-performance I/O.
-* **Background Monitoring:** The tool runs silently in the system tray and checks for new files in real-time.
+* **Background Monitoring:** Relies on Windows change notifications to react as soon as new files appear.
 
 ---
 
@@ -18,7 +20,7 @@
 
 To get a local copy up and running, follow these simple steps.
 
-#### Prerequisites
+#### Prerequisites (Windows)
 
 * A C++17 compatible compiler (MSVC, GCC, or Clang)
 * [CMake](https://cmake.org/download/) 3.16+

@@ -20,9 +20,9 @@ To get a local copy up and running, follow these simple steps.
 
 #### Prerequisites
 
-* A C++17 compatible compiler (e.g., MSVC, GCC, Clang)
-* [CMake](httpss://cmake.org/download/) (version 3.10 or higher)
-* [Git](httpss://git-scm.com/downloads)
+* A C++17 compatible compiler (MSVC, GCC, or Clang)
+* [CMake](https://cmake.org/download/) 3.16+
+* [Git](https://git-scm.com/downloads)
 
 #### Building the Project
 
@@ -32,69 +32,63 @@ To get a local copy up and running, follow these simple steps.
     cd DownloadsJanitor
     ```
 
-2.  **Get Submodules (if you add nlohmann/json as a submodule):**
-    ```sh
-    git submodule update --init --recursive
+2.  **Configure and build (Windows example using Ninja):**
+    ```powershell
+    cmake -S . -B build-win -G "Ninja"
+    cmake --build build-win --config Release
     ```
-    *(Alternatively, manually download the `json.hpp` header into the `external/` folder).*
+    *(Use `-G "Visual Studio 17 2022" -A x64` if you prefer MSBuild.)*
 
-3.  **Configure and build with CMake:**
-    ```sh
-    # Create a build directory
-    cmake -S . -B build
-    
-    # Compile the project
-    cmake --build build
+3.  **Copy the config folder alongside the executable (first run only):**
+    ```powershell
+    robocopy config build-win\config /mir
     ```
 
 4.  **Run the application:**
-    The final executable will be in your `build/` directory.
-    ```sh
-    ./build/DownloadsJanitor.exe
+    ```powershell
+    .\build-win\DownloadsJanitor.exe
     ```
+
+    On startup it registers itself under the current user’s Run key and processes the watch folder once, then keeps watching for changes.
 
 ---
 
-### ⚙️ How to Use
+### ⚙️ Configuration (`config/rules.json`)
 
-By default, `DownloadsJanitor.exe` will look for a `rules.json` file in its current directory.
-
-#### Configuration (`config/rules.json`)
-
-The `rules.json` file is the brain of the operation. You define which folder to watch and what rules to apply.
+The application reads `config/rules.json` from its working directory. The structure supports built-in defaults, reusable placeholders, and custom rules:
 
 ```json
 {
-  "watch_folder": "C:/Users/YourUser/Downloads",
-  "rules": [
+  "user": "YourWindowsUser",
+  "watch_folder": "C:/Users/{{user}}/Downloads",
+  "use_default_rules": true,
+  "default_rules": [
     {
-      "comment": "Move all installers to a specific folder",
-      "extensions": [".exe", ".msi"],
-      "destination": "C:/Users/YourUser/Downloads/Installers"
-    },
+      "extensions": [".exe", ".msi", ".jar"],
+      "destination": "C:/Installers"
+    }
+    // … more defaults
+  ],
+  "custom_rules": [
     {
-      "comment": "Move all compressed archives",
-      "extensions": [".zip", ".rar", ".7z"],
-      "destination": "C:/Users/YourUser/Downloads/Archives"
-    },
-    {
-      "comment": "Organize images",
-      "extensions": [".jpg", ".jpeg", ".png", ".gif"],
-      "destination": "C:/Users/YourUser/Pictures/FromDownloads"
-    },
-    {
-      "comment": "Organize documents",
-      "extensions": [".pdf", ".docx", ".txt"],
-      "destination": "C:/Users/YourUser/Documents/FromDownloads"
+      "extensions": [".blend", ".fbx"],
+      "destination": "C:/Projects/3D"
     }
   ]
 }
 ```
 
-* `"watch_folder"`: The absolute path to the directory you want to clean up. **Note:** Use forward slashes `/` instead of backslashes `\` in JSON.
-* `"rules"`: An array of rule objects.
-    * `"extensions"`: A list of file extensions (including the dot) to match.
-    * `"destination"`: The absolute path where matched files will be moved.
+* `user` (optional): simple placeholder replace used anywhere you write `{{user}}`.
+* `watch_folder`: folder to monitor. All placeholders are expanded before use.
+* `use_default_rules`: toggles the bundled defaults (installer/archive/image/video/audio/doc/web/text groups).
+* `default_rules`: optional overrides for the defaults. If omitted, a built-in list points at system folders such as `Pictures`, `Videos`, `Music`, etc.
+* `custom_rules`: append your own rules; if both defaults and custom rule match the same extension, the first defined wins.
+
+### 🧪 Verifying the setup
+1. Launch the executable from the folder that also contains the `config/` directory.  
+2. Confirm the console prints the resolved watch folder and “Startup entry registered successfully.”  
+3. Drop a file that matches one of your rules into the watch folder; the console should log the move and the file should appear in the configured destination.
+4. Leave the console open to keep watching, or close it after the initial pass if you prefer manual runs.
 
 ---
 

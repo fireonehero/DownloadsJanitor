@@ -10,7 +10,7 @@
 * **Automatic Sorting:** Sorts files based on their extensions (e.g., `.png`, `.jpg` -> `Pictures/`).
 * **Automatic Folder Creation:** If a destination folder doesn't exist, DownloadsJanitor will create it for you.
 * **Modern C++:** Built using C++17 for high-performance I/O.
-* **(In-Progress) Background Monitoring:** A future goal is to have the tool run silently in the system tray and watch for new files in real-time.
+* **Background Monitoring:** The tool runs silently in the system tray and checks for new files in real-time.
 
 ---
 
@@ -95,3 +95,4 @@ The application reads `config/rules.json` from its working directory. The struct
 ### ⚖️ License
 
 This project is licensed under the MPL 2.0 License - see the `LICENSE` file for details.
+

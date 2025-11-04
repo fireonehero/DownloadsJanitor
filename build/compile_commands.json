@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Projects/C++/DownloadsJanitor/build",
-  "command": "C:\\PROGRA~1\\W64DEV~1\\bin\\G__~1.EXE -IC:/Projects/C++/DownloadsJanitor/build/_deps/nlohmann_json-src/include -g -std=c++17 -o CMakeFiles\\DownloadsJanitor.dir\\src\\main.cpp.obj -c C:\\Projects\\C++\\DownloadsJanitor\\src\\main.cpp",
-  "file": "C:/Projects/C++/DownloadsJanitor/src/main.cpp",
-  "output": "C:/Projects/C++/DownloadsJanitor/build/CMakeFiles/DownloadsJanitor.dir/src/main.cpp.obj"
-}
-]

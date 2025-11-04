@@ -53,6 +53,16 @@ To get a local copy up and running, follow these simple steps.
 
     On startup it registers itself under the current user’s Run key and processes the watch folder once, then keeps watching for changes.
 
+#### Launching without a console window
+
+If you prefer the background watcher to start silently, use the helper script:
+
+Just double-click `scripts\RunDownloadsJanitorHidden.vbs` (or run the command below) and it will locate `build-win\DownloadsJanitor.exe`, check that `config\` is present beside it, and launch silently:
+
+```powershell
+wscript.exe ".\scripts\RunDownloadsJanitorHidden.vbs"
+```
+
 ---
 
 ### ⚙️ Configuration (`config/rules.json`)

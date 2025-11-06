@@ -7,6 +7,7 @@
 #include <system_error>
 
 namespace {
+// Limit how many unique filenames we'll try when resolving collisions.
 constexpr std::size_t kMaxCollisionAttempts = 50;
 }
 
@@ -30,6 +31,7 @@ bool FileMover::organizeOnce() {
         return false;
     }
 
+    // Validate the target directory before trying to iterate over it.
     std::error_code ec;
     if (!std::filesystem::exists(m_watchFolder, ec) || ec) {
         std::cerr << "Watch folder `" << m_watchFolder.string() << "` is not accessible: " << (ec ? ec.message() : "path does not exist") << std::endl;
@@ -61,6 +63,7 @@ bool FileMover::organizeOnce() {
             continue;
         }
 
+        // Ensure the destination exists before attempting the move.
         std::error_code mkdirErr;
         std::filesystem::create_directories(destinationDir, mkdirErr);
         if (mkdirErr) {
@@ -78,6 +81,7 @@ bool FileMover::organizeOnce() {
 }
 
 void FileMover::rebuildLookup() {
+    // Recreate the mapping so normalizing extensions only happens once per rule.
     m_extensionToDestination.clear();
     for (const auto& rule : m_rules) {
         std::filesystem::path destination(rule.destination);
@@ -111,6 +115,7 @@ std::filesystem::path FileMover::resolveDestinationFor(const std::filesystem::pa
 }
 
 std::string FileMover::normalizeExtension(std::string extension) {
+    // Remove whitespace and standardize the casing/dot prefix so lookups match consistently.
     extension.erase(std::remove_if(extension.begin(), extension.end(), [](unsigned char ch) {
         return std::isspace(ch);
     }), extension.end());
@@ -132,6 +137,7 @@ std::string FileMover::normalizeExtension(std::string extension) {
 bool FileMover::moveFile(const std::filesystem::path& sourcePath, const std::filesystem::path& destinationFolder) const {
     auto targetPath = destinationFolder / sourcePath.filename();
 
+    // Try the straightforward move first.
     std::error_code renameErr;
     std::filesystem::rename(sourcePath, targetPath, renameErr);
     if (!renameErr) {
@@ -144,6 +150,7 @@ bool FileMover::moveFile(const std::filesystem::path& sourcePath, const std::fil
     if (renameErr == std::errc::file_exists || (!existsCheckErr && targetExists)) {
         std::filesystem::path uniquePath;
         std::error_code existsErr;
+        // Generate suffixed filenames until we find a free spot or exhaust attempts.
         for (std::size_t attempt = 1; attempt <= kMaxCollisionAttempts; ++attempt) {
             uniquePath = destinationFolder / (targetPath.stem().string() + "_" + std::to_string(attempt) + targetPath.extension().string());
             bool uniqueExists = std::filesystem::exists(uniquePath, existsErr);
@@ -168,6 +175,7 @@ bool FileMover::moveFile(const std::filesystem::path& sourcePath, const std::fil
     if (renameErr == std::errc::cross_device_link) {
         auto targetPathCopy = destinationFolder / sourcePath.filename();
         std::error_code copyErr;
+        // Fall back to copy + delete when moving across volumes or network shares.
         std::filesystem::copy_file(sourcePath, targetPathCopy, std::filesystem::copy_options::overwrite_existing, copyErr);
         if (!copyErr) {
             std::error_code removeErr;

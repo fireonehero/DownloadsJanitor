@@ -20,6 +20,7 @@ constexpr wchar_t kStartupValueName[] = L"DownloadsJanitor";
 constexpr wchar_t kRunKeyPath[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 constexpr DWORD kWatchFilters = FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_SIZE | FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_CREATION;
 
+// Convert a Win32 error code into a trimmed UTF-8 description for logging.
 std::string formatWindowsError(DWORD code) {
     LPWSTR messageBuffer = nullptr;
     const DWORD length = FormatMessageW(
@@ -48,6 +49,7 @@ std::string formatWindowsError(DWORD code) {
     return message.empty() ? ("Unknown error (" + std::to_string(code) + ")") : message;
 }
 
+// Return the absolute path for the currently running executable, or empty on failure.
 std::filesystem::path getExecutablePath() {
     std::wstring buffer(MAX_PATH, L'\0');
     DWORD length = GetModuleFileNameW(nullptr, buffer.data(), static_cast<DWORD>(buffer.size()));
@@ -67,6 +69,7 @@ std::filesystem::path getExecutablePath() {
     return std::filesystem::path(buffer);
 }
 
+// Register the janitor to run at logon by writing to the user's Run registry key.
 bool registerForStartup(const std::wstring& commandLine) {
     if (commandLine.empty()) {
         std::cerr << "Unable to register startup entry: command line is empty." << std::endl;
@@ -109,6 +112,7 @@ bool registerForStartup(const std::wstring& commandLine) {
     return true;
 }
 
+// Monitor the watch folder for changes and trigger the mover each time a notification arrives.
 bool watchForChanges(const std::filesystem::path& watchFolder, FileMover& mover) {
     std::wstring watchFolderWide = watchFolder.wstring();
     HANDLE changeHandle = FindFirstChangeNotificationW(watchFolderWide.c_str(), FALSE, kWatchFilters);
@@ -127,6 +131,7 @@ bool watchForChanges(const std::filesystem::path& watchFolder, FileMover& mover)
                 std::cerr << "One or more files failed to move during processing." << std::endl;
             }
 
+            // A brief delay keeps duplicate notifications from spinning the loop too quickly.
             std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
             if (!FindNextChangeNotification(changeHandle)) {
@@ -152,6 +157,7 @@ int main() {
     std::cerr << "DownloadsJanitor currently supports Windows only." << std::endl;
     return EXIT_FAILURE;
 #else
+    // Use the executable location so the janitor can ship a bundled config folder.
     const std::filesystem::path executablePath = getExecutablePath();
     const std::filesystem::path configRoot =
         executablePath.empty() ? std::filesystem::current_path() : executablePath.parent_path();
@@ -180,6 +186,7 @@ int main() {
     if (executablePath.empty()) {
         std::cerr << "Executable path is empty; cannot configure startup." << std::endl;
     } else {
+        // Prefer the companion VBScript so the janitor starts hidden, but fall back to the exe.
         std::error_code scriptExistsErr;
         const std::filesystem::path scriptPath =
             executablePath.parent_path().parent_path() / "scripts" / "RunDownloadsJanitorHidden.vbs";
@@ -206,6 +213,7 @@ int main() {
     }
 
     std::cout << "Running DownloadsJanitor once on startup..." << std::endl;
+    // Process any new arrivals before entering the long-running watcher loop.
     mover.organizeOnce();
 
     if (!watchForChanges(watchFolder, mover)) {

@@ -15,6 +15,7 @@ std::string ConfigParser::getWatchFolder() const {
         return {};
     }
 
+    // Confirm the folder exists before handing it back to callers.
     std::error_code ec;
     if (std::filesystem::exists(m_watch_folder, ec)) {
         return m_watch_folder;
@@ -34,6 +35,7 @@ const std::vector<Rule>& ConfigParser::getRules() const {
 }
 
 bool ConfigParser::load(const std::string& filePath) {
+    // rules.json lives in a config folder beside the executable/config root.
     std::filesystem::path configDir = std::filesystem::path(filePath) / "config";
     std::filesystem::path rulesPath = configDir / "rules.json";
 
@@ -87,6 +89,7 @@ bool ConfigParser::load(const std::string& filePath) {
                     std::cout << "`default_rules` is empty; no default rules applied from file." << std::endl;
                 }
             } else {
+                // Fall back to a curated set so new users get sensible behavior out of the box.
                 const auto defaults = builtInDefaultRules(std::filesystem::path(m_watch_folder));
                 m_rules.insert(m_rules.end(), defaults.begin(), defaults.end());
                 std::cout << "Using built-in default rules (" << defaults.size() << " rule(s))." << std::endl;
@@ -173,6 +176,7 @@ bool ConfigParser::parseRuleArray(const json& rulesArray, const std::string& sec
 
 std::vector<Rule> ConfigParser::builtInDefaultRules(const std::filesystem::path& watchFolder) const {
     const std::filesystem::path base = watchFolder.empty() ? std::filesystem::path{} : watchFolder;
+    // Helper to either use the watch folder as a base or keep relative subfolders.
     auto makeDestination = [&](const std::string& subFolder) -> std::string {
         if (base.empty()) {
             return subFolder;
@@ -194,6 +198,7 @@ std::vector<Rule> ConfigParser::builtInDefaultRules(const std::filesystem::path&
 void ConfigParser::loadPlaceholders(const json& data) {
     m_placeholders.clear();
 
+    // Support both legacy `user` token and the newer `placeholders` map.
     auto addPlaceholder = [this](const std::string& key, const json& value) {
         if (!value.is_string()) {
             std::cerr << "Placeholder `" << key << "` must be a string." << std::endl;
@@ -222,6 +227,7 @@ std::string ConfigParser::applyPlaceholders(const std::string& value) const {
     for (const auto& [key, replacement] : m_placeholders) {
         const std::string token = "{{" + key + "}}";
         std::size_t pos = 0;
+        // Replace all occurrences instead of just the first to allow repeated tokens.
         while ((pos = result.find(token, pos)) != std::string::npos) {
             result.replace(pos, token.size(), replacement);
             pos += replacement.size();
